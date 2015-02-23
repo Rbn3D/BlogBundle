@@ -59,41 +59,31 @@ class LinkRepository extends DocumentRepository
     public function getQueryForGetActiveOrdered()
     {
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT l FROM BlogBundle:Link l ' .
-            ' WHERE l.isPublished = ' . LinkStatus::PUBLISHED .
-            ' ORDER BY l.name ASC '
-        );
+        $qb = $em->createQueryBuilder();
 
-        return $query;
+        $qb->field('published')->equals(LinkStatus::PUBLISHED);
+        $qb->sort('name', 'ASC');
+
+        return $qb;
     }
 
     /**
      *
-     * @return \Doctrine\ODM\QueryBuilder
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
     public function getQueryBuilderForFilter()
     {
         $em = $this->getDocumentManager();
         $qb = $em->createQueryBuilder();
-        $qb
-            ->select('l')
-            ->from('BlogBundle:Link', 'l')
-            ->orderBy('l.updatedAt', 'DESC');
+
+        $qb->sort('updatedAt', 'DESC');
 
         return $qb;
     }
 
     public function getOneBySlug($slug)
     {
-        $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT l FROM BlogBundle:Link l ' .
-            ' WHERE l.slug = :slug '
-        )
-            ->setParameter('slug', $slug);
-
-        return $query->getOneOrNullResult();
+        return $this->findOneBy(['slug' => $slug]);
     }
 
     /**
@@ -105,14 +95,11 @@ class LinkRepository extends DocumentRepository
     public function countFromDate(DateTime $date)
     {
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT COUNT(l) FROM BlogBundle:Link l ' .
-            ' WHERE l.isPublished = ' . LinkStatus::PUBLISHED .
-            ' AND l.createdAt >= :date '
-        )
-            ->setParameter('date', $date);
-
-        return $query->getSingleScalarResult();
+        return $em->createQueryBuilder()
+            ->field('status')->equals(LinkStatus::PUBLISHED)
+            ->field('createdAt')->gte($date)
+            ->getQuery()->execute()->count()
+            ;
     }
 
     /**
@@ -123,6 +110,7 @@ class LinkRepository extends DocumentRepository
      */
     public function getMoreActiveFromDate(DateTime $date, $limit = 10)
     {
+        // TODO: No ported to ODM
         $em = $this->getDocumentManager();
         $query = $em->createQuery(
             ' SELECT l ' .

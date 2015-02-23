@@ -2,12 +2,12 @@
 
 namespace Desarrolla2\Bundle\BlogBundle\Document\Repository;
 
-use \Doctrine\ODM\DocumentRepository;
+
 use \Desarrolla2\Bundle\BlogBundle\Document\Post;
 use \Desarrolla2\Bundle\BlogBundle\Document\Tag;
 use Desarrolla2\Bundle\BlogBundle\Model\PostStatus;
 use \DateTime;
-use Doctrine\ODM\Query;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 
 /**
  * PostRepository
@@ -23,19 +23,23 @@ class PostRepository extends DocumentRepository
     /**
      * @param array $ids
      *
-     * @return \Doctrine\ODM\AbstractQuery
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
     public function getQueryForGetByIds(array $ids)
     {
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT p FROM BlogBundle:Post p ' .
-            ' WHERE p.id IN (:ids) ' .
-            ' AND p.status = ' . PostStatus::PUBLISHED
-        )
-            ->setParameter('ids', $ids);
+        $qb = $em->createQueryBuilder();
+        $qb->field('status')->equals(PostStatus::PUBLISHED);
 
-        return $query;
+        $or = [];
+
+        foreach ($ids as $id) {
+            $or[] = $qb->field('id')->equals($id);
+        }
+
+        $qb->addOr($or);
+
+        return $qb;
     }
 
     /**
@@ -50,7 +54,8 @@ class PostRepository extends DocumentRepository
         }
 
         return $this->getQueryForGetByIds($ids)
-            ->getResult();
+            ->getQuery()->execute()
+            ;
     }
 
     /**
@@ -61,14 +66,7 @@ class PostRepository extends DocumentRepository
      */
     public function getOneBySlug($slug)
     {
-        $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT p FROM BlogBundle:Post p ' .
-            ' WHERE p.slug = :slug '
-        )
-            ->setParameter('slug', $slug);
-
-        return $query->getOneOrNullResult();
+        return $this->findOneBy(['slug' => $slug]);
     }
 
     /**
@@ -76,15 +74,16 @@ class PostRepository extends DocumentRepository
      * @param \Desarrolla2\Bundle\BlogBundle\Document\Tag $tag
      * @param int                                       $limit
      *
-     * @return \Doctrine\ODM\Query
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
     public function getByTag(Tag $tag, $limit = self::POST_PER_PAGE)
     {
         $limit = (int) $limit;
         $query = $this->getQueryForGetByTag($tag, $limit)
-            ->setMaxResults($limit);
+            ->limit($limit)
+        ;
 
-        return $query->getResult();
+        return $query->getQuery()->execute();
     }
 
     /**
@@ -97,25 +96,29 @@ class PostRepository extends DocumentRepository
     {
         $limit = (int) $limit;
         $query = $this->getQueryForGet($limit)
-            ->setMaxResults($limit);
+            ->limit($limit)
+        ;
 
-        return $query->getResult();
+        return $query->getQuery()->execute();
     }
 
     /**
      *
-     * @return \Doctrine\ODM\Query
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
     public function getQueryForGet()
     {
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT p FROM BlogBundle:Post p ' .
-            ' WHERE p.status = ' . PostStatus::PUBLISHED .
-            ' ORDER BY p.promotion DESC, p.publishedAt DESC '
-        );
+        $qb = $em->createQueryBuilder();
 
-        return $query;
+        $qb->field('status')->equals(PostStatus::PUBLISHED);
+        $qb->sort([
+            'promotion' => 'DESC',
+            'publishedAt' => 'DESC'
+        ])
+        ;
+
+        return $qb;
     }
 
     /**
@@ -128,49 +131,41 @@ class PostRepository extends DocumentRepository
     {
         $query = $this->getQueryForGetByTagSlug($slug);
 
-        return $query->getResult();
+        return $query->getQuery()->execute();
     }
 
     /**
      *
      * @param \Desarrolla2\Bundle\BlogBundle\Document\Tag $tag
      *
-     * @return \Doctrine\ODM\Query
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
     public function getQueryForGetByTag(Tag $tag)
     {
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT p FROM BlogBundle:Post p ' .
-            ' JOIN p.tags t ' .
-            ' WHERE p.status = ' . PostStatus::PUBLISHED .
-            ' AND t.slug  = :slug ' .
-            ' ORDER BY p.publishedAt DESC '
-        )
-            ->setParameter('slug', $tag->getSlug());
+        $qb = $em->createQueryBuilder();
 
-        return $query;
+        $qb->field('status')->equals(PostStatus::PUBLISHED);
+        $qb->field('tags.slug')->equals($tag->getSlug());
+        $qb->sort('publishedAt', 'DESC');
+
+        return $qb;
     }
 
     /**
      *
      * @param string $slug
      *
-     * @return \Doctrine\ODM\Query
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
     public function getQueryForGetByTagSlug($slug = '')
     {
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT p FROM BlogBundle:Post p ' .
-            ' JOIN p.tags t ' .
-            ' WHERE p.status = ' . PostStatus::PUBLISHED .
-            ' AND t.slug = :slug ' .
-            ' ORDER BY p.publishedAt DESC '
-        )
-            ->setParameter('slug', $slug);
+        $qb = $em->createQueryBuilder();
+        $qb->field('status')->equals(PostStatus::PUBLISHED);
+        $qb->field('tags.slug')->equals($slug);
 
-        return $query;
+        return $qb;
     }
 
     /**
@@ -184,18 +179,24 @@ class PostRepository extends DocumentRepository
     {
         $limit = (int) $limit;
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
+        $qb = $em->createQueryBuilder();
+
+        $qb->field('status')->equals(PostStatus::PUBLISHED);
+        $qb->sort('publishedAt', 'DESC');
+
+        // TODO
+
             ' SELECT p FROM BlogBundle:Post p ' .
             ' JOIN p.tags t ' .
             ' JOIN t.posts p1 ' .
             ' WHERE p.status = ' . PostStatus::PUBLISHED .
             ' AND p1 = :post ' .
             ' AND p != :post ' .
-            ' ORDER BY p.publishedAt DESC '
-        )
+            ' ORDER BY p.publishedAt DESC ';
+
             ->setParameter('post', $post)
             ->setMaxResults($limit);
-        $related = $query->getResult();
+        $related = $qb->getQuery()->execute();
         if (count($related)) {
             return $related;
         } else {
