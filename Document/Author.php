@@ -22,14 +22,14 @@ class Author extends Person
     /**
      * @var string $name
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ODM\Column(name="name", type="string", length=255)
      */
     protected $name;
 
     /**
      * @var string $email
      *
-     * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @ODM\Column(name="email", type="string", length=255, unique=true)
      */
     protected $email;
 
@@ -37,7 +37,7 @@ class Author extends Person
      * @var string $slug
      *
      * @Gedmo\Slug(fields={"name"})
-     * @ORM\Column(name="slug", type="string", length=255, unique=true))
+     * @ODM\Column(name="slug", type="string", length=255, unique=true))
      */
     protected $slug;
 
@@ -45,7 +45,7 @@ class Author extends Person
      *
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetDocument="Post", mappedBy="author")
+     * @ODM\OneToMany(targetDocument="Post", mappedBy="author")
      */
     protected $posts;
 
@@ -53,7 +53,7 @@ class Author extends Person
      * @var \DateTime $createdAt
      *
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ODM\Column(name="created_at", type="datetime")
      */
     protected $createdAt;
 
@@ -61,7 +61,7 @@ class Author extends Person
      * @var \DateTime $updatedAt
      *
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ODM\Column(name="updated_at", type="datetime")
      */
     protected $updatedAt;
 

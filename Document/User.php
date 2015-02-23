@@ -24,7 +24,7 @@ class User extends Person
     protected $id;
 
     /**
-     * @ORM\ReferenceOne(targetDocument="Profile", mappedBy="user", cascade={"persist", "remove"})
+     * @ODM\ReferenceOne(targetDocument="Profile", mappedBy="user", cascade={"persist", "remove"})
      **/
     protected $profile;
 

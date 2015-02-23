@@ -14,7 +14,6 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 /**
  * Desarrolla2\Bundle\BlogBundle\Document\Post
  *
- * @ORM\Table(name="search_query",indexes={@ORM\Index(name="search_query_idx", columns={"query"})})
  * @ODM\Document(repositoryClass="Desarrolla2\Bundle\BlogBundle\Document\Repository\SearchQueryRepository")
  */
 class SearchQuery
@@ -30,7 +29,7 @@ class SearchQuery
      *
      * @var string
      *
-     * @ORM\Column(name="query", type="string")
+     * @ODM\Column(name="query", type="string")
      */
     protected $query;
 
