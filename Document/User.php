@@ -8,26 +8,23 @@
  * with this package in the file LICENSE.
  */
 
-namespace Desarrolla2\Bundle\BlogBundle\Entity;
+namespace Desarrolla2\Bundle\BlogBundle\Document;
 
 use FOS\UserBundle\Model\User as BaseUser;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="fos_user")
+ * @ODM\Document
  */
-class User extends BaseUser
+class User extends Person
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ODM\Id(strategy="auto")
      */
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Profile", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\ReferenceOne(targetDocument="Profile", mappedBy="user", cascade={"persist", "remove"})
      **/
     protected $profile;
 

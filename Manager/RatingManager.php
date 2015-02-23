@@ -9,7 +9,7 @@
  */
 namespace Desarrolla2\Bundle\BlogBundle\Manager;
 
-use Desarrolla2\Bundle\BlogBundle\Entity\Rating;
+use Desarrolla2\Bundle\BlogBundle\Document\Rating;
 use Desarrolla2\Bundle\BlogBundle\Event\RatingEvent;
 use Desarrolla2\Bundle\BlogBundle\Event\RatingEvents;
 

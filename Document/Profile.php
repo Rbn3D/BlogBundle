@@ -8,47 +8,46 @@
  * file that was distributed with this source code.
  */
 
-namespace Desarrolla2\Bundle\BlogBundle\Entity;
+namespace Desarrolla2\Bundle\BlogBundle\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Profile
  *
- * @ORM\Table(name="profile")
- * @ORM\Entity(repositoryClass="Desarrolla2\Bundle\BlogBundle\Entity\Repository\ProfileRepository")
+ * @ODM\Document(repositoryClass="Desarrolla2\Bundle\BlogBundle\Document\Repository\ProfileRepository")
  */
 class Profile
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ODM\Id(strategy="auto")
      */
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="User", inversedBy="profile")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ODM\ReferenceOne(targetDocument="User", inversedBy="profile")
      **/
     protected $user;
 
     /**
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ODM\String()
      */
     protected $name;
 
     /**
-     * @ORM\Column(name="address", type="string", length=255)
+     * @ODM\String()
      */
     protected $address;
 
     /**
-     * @ORM\Column(name="description", type="text")
+     * @ODM\String()
      */
     protected $description;
 
+    /**
+     * @ODM\String()
+     */
     protected $avatar;
 
     /**

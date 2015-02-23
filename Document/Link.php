@@ -10,17 +10,16 @@
  * with this package in the file LICENSE.
  */
 
-namespace Desarrolla2\Bundle\BlogBundle\Entity;
+namespace Desarrolla2\Bundle\BlogBundle\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  *
  * Description of Link
  *
- * @ORM\Table(name="link")
- * @ORM\Entity(repositoryClass="Desarrolla2\Bundle\BlogBundle\Entity\Repository\LinkRepository")
+ * @ODM\Document(repositoryClass="Desarrolla2\Bundle\BlogBundle\Document\Repository\LinkRepository")
  *
  */
 class Link
@@ -29,16 +28,14 @@ class Link
     /**
      * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ODM\Id(strategy="auto")
      */
     protected $id;
 
     /**
      * @var string $name
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ODM\String()
      */
     protected $name;
 
@@ -46,57 +43,58 @@ class Link
      * @var string $slug
      *
      * @Gedmo\Slug(fields={"name"})
-     * @ORM\Column(name="slug", type="string", length=255, unique=true))
+     * @ODM\String()
+     * @ODM\UniqueIndex(unique=true)
      */
     protected $slug;
 
     /**
      * @var string $url
      *
-     * @ORM\Column(name="url", type="string", length=255, unique=true)
+     * @ODM\String()
      */
     protected $url;
 
     /**
      * @var string $rss
      *
-     * @ORM\Column(name="rss", type="string", length=255, nullable=true)
+     * @ODM\String()
      */
     protected $rss = null;
 
     /**
      * @var string $mail
      *
-     * @ORM\Column(name="mail", type="string", length=255, nullable=true)
+     * @ODM\String()
      */
     protected $mail = null;
 
     /**
      * @var string $description
      *
-     * @ORM\Column(name="description", type="text")
+     * @ODM\String()
      */
     protected $description = '';
 
     /**
      * @var string $content
      *
-     * @ORM\Column(name="notes", type="text")
+     * @ODM\String()
      */
     protected $notes = '';
 
     /**
-     * @var string $isPublished
+     * @var boolean $published
      *
-     * @ORM\Column(name="is_published", type="boolean")
+     * @ODM\Boolean()
      */
-    protected $isPublished = false;
+    protected $published = false;
 
     /**
      * @var \DateTime $created_at
      *
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ODM\DateTime
      */
     protected $createdAt;
 
@@ -104,21 +102,9 @@ class Link
      * @var \DateTime $updated_at
      *
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ODM\DateTime
      */
     protected $updatedAt;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-    }
-
-    public function __toString()
-    {
-        return $this->getName();
-    }
 
     /**
      * Get id
@@ -182,9 +168,9 @@ class Link
      * @param  boolean $isPublished
      * @return Link
      */
-    public function setIsPublished($isPublished)
+    public function setPublished($published)
     {
-        $this->isPublished = $isPublished;
+        $this->published = $published;
 
         return $this;
     }
@@ -194,9 +180,9 @@ class Link
      *
      * @return boolean
      */
-    public function getIsPublished()
+    public function getPublished()
     {
-        return $this->isPublished;
+        return $this->published;
     }
 
     /**
@@ -347,5 +333,10 @@ class Link
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }

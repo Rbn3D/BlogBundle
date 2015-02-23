@@ -12,11 +12,11 @@
 
 namespace Desarrolla2\Bundle\BlogBundle\Manager;
 
-use Desarrolla2\Bundle\BlogBundle\Entity\Repository\PostRepository;
+use Desarrolla2\Bundle\BlogBundle\Document\Repository\PostRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\ORM\EntityManager;
-use Desarrolla2\Bundle\BlogBundle\Entity\Post;
+use Desarrolla2\Bundle\BlogBundle\Document\Post;
 use Desarrolla2\Bundle\BlogBundle\Model\PostStatus;
 use \DateTime;
 

@@ -10,7 +10,7 @@
 namespace Desarrolla2\Bundle\BlogBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
-use Desarrolla2\Bundle\BlogBundle\Entity\Post;
+use Desarrolla2\Bundle\BlogBundle\Document\Post;
 
 /**
  * PostEvent

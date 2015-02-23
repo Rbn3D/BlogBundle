@@ -7,8 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
-use Desarrolla2\Bundle\BlogBundle\Entity\Post;
-use Desarrolla2\Bundle\BlogBundle\Entity\Comment;
+use Desarrolla2\Bundle\BlogBundle\Document\Post;
+use Desarrolla2\Bundle\BlogBundle\Document\Comment;
 use Desarrolla2\Bundle\BlogBundle\Form\Type\CommentType;
 use Desarrolla2\Bundle\BlogBundle\Form\Model\CommentModel;
 use Desarrolla2\Bundle\BlogBundle\Model\PostStatus;
@@ -117,9 +117,9 @@ class PostController extends Controller
     }
 
     /**
-     * @param  \Desarrolla2\Bundle\BlogBundle\Entity\Post $post
+     * @param  \Desarrolla2\Bundle\BlogBundle\Document\Post $post
      *
-     * @return \Desarrolla2\Bundle\BlogBundle\Entity\Comment
+     * @return \Desarrolla2\Bundle\BlogBundle\Document\Comment
      */
     protected function createCommentForPost(Post $post)
     {

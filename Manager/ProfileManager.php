@@ -10,8 +10,8 @@
 
 namespace Desarrolla2\Bundle\BlogBundle\Manager;
 
-use Desarrolla2\Bundle\BlogBundle\Entity\Profile;
-use Desarrolla2\Bundle\BlogBundle\Entity\User;
+use Desarrolla2\Bundle\BlogBundle\Document\Profile;
+use Desarrolla2\Bundle\BlogBundle\Document\User;
 use Doctrine\ORM\EntityRepository;
 
 /**

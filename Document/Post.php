@@ -1,8 +1,8 @@
 <?php
 
-namespace Desarrolla2\Bundle\BlogBundle\Entity;
+namespace Desarrolla2\Bundle\BlogBundle\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Desarrolla2\Bundle\BlogBundle\Model\PostStatus;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,24 +10,21 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Post
  *
- * @ORM\Table(name="post")
- * @ORM\Entity(repositoryClass="Desarrolla2\Bundle\BlogBundle\Entity\Repository\PostRepository")
+ * @ODM\Document(repositoryClass="Desarrolla2\Bundle\BlogBundle\Document\Repository\PostRepository")
  */
 class Post
 {
     /**
      * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ODM\Id(strategy="auto")
      */
     protected $id;
 
     /**
      * @var string $name
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ODM\String()
      */
     protected $name;
 
@@ -35,92 +32,91 @@ class Post
      * @var string $slug
      *
      * @Gedmo\Slug(fields={"name"})
-     * @ORM\Column(name="slug", type="string", length=255, unique=true))
+     * @ODM\String()
      */
     protected $slug;
 
     /**
      * @var string $source
      *
-     * @ORM\Column(name="source", type="string", length=255, nullable=true)
+     * @ODM\String()
      */
     protected $source;
 
     /**
      * @var string $image
      *
-     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     * @ODM\String()
      */
     protected $image;
 
     /**
      * @var string $intro
      *
-     * @ORM\Column(name="intro", type="text")
+     * @ODM\String()
      */
     protected $intro;
 
     /**
      * @var string $content
      *
-     * @ORM\Column(name="content", type="text")
+     * @ODM\String()
      */
     protected $content;
 
     /**
      * @var int $status
      *
-     * @ORM\Column(name="status", type="integer")
+     * @ODM\Int
      */
     protected $status = 0;
 
     /**
      * @var int $promotion
      *
-     * @ORM\Column(name="promotion", type="integer")
+     * @ODM\Int
      */
     protected $promotion = 0;
 
     /**
      * @var int $rating
      *
-     * @ORM\Column(name="rating", type="integer")
+     * @ODM\Int
      */
     protected $rating = 0;
 
     /**
      * @var int $votes
      *
-     * @ORM\Column(name="votes", type="integer")
+     * @ODM\Int
      */
     protected $votes = 0;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Tag",inversedBy="tags")
-     * @ORM\JoinTable(name="post_tag")
+     * @ODM\ReferenceMany(targetDocument="Tag",inversedBy="tags")
      */
     protected $tags;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="post", cascade={"remove"})
+     * @ODM\ReferenceMany(targetDocument="Comment", mappedBy="post", cascade={"remove"})
      */
     protected $comments;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="PostHistory", mappedBy="post", cascade={"remove"})
+     * @ODM\ReferenceMany(targetDocument="PostHistory", mappedBy="post", cascade={"remove"})
      */
     protected $history;
 
     /**
      * @var Author
      *
-     * @ORM\ManyToOne(targetEntity="Author")
+     * @ODM\ReferenceOne(targetDocument="Author")
      */
     protected $author;
 
@@ -128,7 +124,7 @@ class Post
      * @var \DateTime $created_at
      *
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ODM\DateTime
      */
     protected $createdAt;
 
@@ -136,14 +132,14 @@ class Post
      * @var \DateTime $updated_at
      *
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ODM\DateTime
      */
     protected $updatedAt;
 
     /**
      * @var \DateTime $published_at
      *
-     * @ORM\Column(name="published_at", type="datetime", nullable=true)
+     * @ODM\DateTime
      */
     protected $publishedAt;
 
@@ -462,11 +458,11 @@ class Post
     /**
      * Add history
      *
-     * @param \Desarrolla2\Bundle\BlogBundle\Entity\PostHistory $history
+     * @param \Desarrolla2\Bundle\BlogBundle\Document\PostHistory $history
      *
      * @return Post
      */
-    public function addHistory(\Desarrolla2\Bundle\BlogBundle\Entity\PostHistory $history)
+    public function addHistory(\Desarrolla2\Bundle\BlogBundle\Document\PostHistory $history)
     {
         $this->history[] = $history;
 
@@ -476,9 +472,9 @@ class Post
     /**
      * Remove history
      *
-     * @param \Desarrolla2\Bundle\BlogBundle\Entity\PostHistory $history
+     * @param \Desarrolla2\Bundle\BlogBundle\Document\PostHistory $history
      */
-    public function removeHistory(\Desarrolla2\Bundle\BlogBundle\Entity\PostHistory $history)
+    public function removeHistory(\Desarrolla2\Bundle\BlogBundle\Document\PostHistory $history)
     {
         $this->history->removeElement($history);
     }

@@ -15,7 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Desarrolla2\Bundle\BlogBundle\Model\PostStatus;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Desarrolla2\Bundle\BlogBundle\Entity\PostClick;
+use Desarrolla2\Bundle\BlogBundle\Document\PostClick;
 
 /**
  * RedirectController

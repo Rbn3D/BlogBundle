@@ -1,62 +1,57 @@
 <?php
 
-namespace Desarrolla2\Bundle\BlogBundle\Entity;
+namespace Desarrolla2\Bundle\BlogBundle\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Desarrolla2\Bundle\BlogBundle\Entity\Author
+ * Desarrolla2\Bundle\BlogBundle\Document\Tag
  *
- * @ORM\Table(name="author")
- * @ORM\Entity(repositoryClass="Desarrolla2\Bundle\BlogBundle\Entity\Repository\AuthorRepository")
+ * @ODM\Document(repositoryClass="Desarrolla2\Bundle\BlogBundle\Document\Repository\TagRepository")
  */
-class Author
+class Tag
 {
     /**
      * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ODM\Id(strategy="auto")
      */
     protected $id;
 
     /**
-     * @var string $name
-     *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ODM\ReferenceMany(targetDocument="Post", mappedBy="tag")
      */
-    protected $name;
+    protected $posts;
 
     /**
-     * @var string $email
+     * @var string $name
      *
-     * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @ODM\String()
      */
-    protected $email;
+    protected $name;
 
     /**
      * @var string $slug
      *
      * @Gedmo\Slug(fields={"name"})
-     * @ORM\Column(name="slug", type="string", length=255, unique=true))
+     * @ODM\String()
+     * @ODM\UniqueIndex(unique=true)
      */
     protected $slug;
 
     /**
+     * @var int $items
      *
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="Post", mappedBy="author")
+     * @ODM\Int
      */
-    protected $posts;
+    protected $items;
 
     /**
      * @var \DateTime $createdAt
      *
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ODM\DateTime
      */
     protected $createdAt;
 
@@ -64,7 +59,7 @@ class Author
      * @var \DateTime $updatedAt
      *
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ODM\DateTime
      */
     protected $updatedAt;
 
@@ -73,9 +68,14 @@ class Author
      */
     public function __construct()
     {
+        $this->items = 0;
         $this->posts = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    /**
+     *
+     * @return string
+     */
     public function __toString()
     {
         return $this->getName();
@@ -95,13 +95,12 @@ class Author
      * Set name
      *
      * @param  string $name
-     * @return Author
+     *
+     * @return Tag
      */
     public function setName($name)
     {
-        $this->name = $name;
-
-        return $this;
+        $this->name = strtolower($name);
     }
 
     /**
@@ -118,13 +117,12 @@ class Author
      * Set created_at
      *
      * @param  \DateTime $createdAt
-     * @return Author
+     *
+     * @return Tag
      */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-
-        return $this;
     }
 
     /**
@@ -141,13 +139,12 @@ class Author
      * Set updated_at
      *
      * @param  \DateTime $updatedAt
-     * @return Author
+     *
+     * @return Tag
      */
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
     }
 
     /**
@@ -161,26 +158,48 @@ class Author
     }
 
     /**
+     * Set slug
+     *
+     * @param  string $slug
+     *
+     * @return Tag
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
      * Add posts
      *
-     * @param  Desarrolla2\Bundle\BlogBundle\Entity\Post $posts
-     * @return Author
+     * @param  Desarrolla2\Bundle\BlogBundle\Document\Post $post
+     *
+     * @return Tag
      */
-    public function addPost(\Desarrolla2\Bundle\BlogBundle\Entity\Post $posts)
+    public function addPost(\Desarrolla2\Bundle\BlogBundle\Document\Post $post)
     {
+        $post->addTag($this);
         $this->posts[] = $posts;
-
-        return $this;
     }
 
     /**
      * Remove posts
      *
-     * @param Desarrolla2\Bundle\BlogBundle\Entity\Post $posts
+     * @param Desarrolla2\Bundle\BlogBundle\Document\Post $post
      */
-    public function removePost(\Desarrolla2\Bundle\BlogBundle\Entity\Post $posts)
+    public function removePost(\Desarrolla2\Bundle\BlogBundle\Document\Post $post)
     {
-        $this->posts->removeElement($posts);
+        $this->posts->removeElement($post);
     }
 
     /**
@@ -194,36 +213,25 @@ class Author
     }
 
     /**
-     * Set slug
+     * Set items
      *
-     * @param  string $slug
-     * @return Author
+     * @param  int $items
+     *
+     * @return Tag
      */
-    public function setSlug($slug)
+    public function setItems($items)
     {
-        $this->slug = $slug;
-
-        return $this;
+        $this->items = (int)$items;
     }
 
     /**
-     * Get slug
+     * Get items
      *
-     * @return string
+     * @return int
      */
-    public function getSlug()
+    public function getItems()
     {
-        return $this->slug;
-    }
-
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    public function setEmail($email)
-    {
-        $this->email = $email;
+        return $this->items;
     }
 
 }

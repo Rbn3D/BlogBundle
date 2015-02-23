@@ -1,9 +1,9 @@
 <?php
 
-namespace Desarrolla2\Bundle\BlogBundle\Entity\Repository;
+namespace Desarrolla2\Bundle\BlogBundle\Document\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Desarrolla2\Bundle\BlogBundle\Entity\Post;
+use Desarrolla2\Bundle\BlogBundle\Document\Post;
 use Desarrolla2\Bundle\BlogBundle\Model\CommentStatus;
 use DateTime;
 
@@ -34,7 +34,7 @@ class CommentRepository extends EntityRepository
 
     /**
      *
-     * @param  \Desarrolla2\Bundle\BlogBundle\Entity\Post $post
+     * @param  \Desarrolla2\Bundle\BlogBundle\Document\Post $post
      * @param  int                                        $limit
      * @return array
      */
@@ -78,7 +78,7 @@ class CommentRepository extends EntityRepository
     }
 
     /**
-     * @param  \Desarrolla2\Bundle\BlogBundle\Entity\Post $post
+     * @param  \Desarrolla2\Bundle\BlogBundle\Document\Post $post
      * @return \Doctrine\ORM\Query
      */
     public function getQueryForGetForPost(Post $post)
@@ -98,7 +98,7 @@ class CommentRepository extends EntityRepository
 
     /**
      *
-     * @param  \Desarrolla2\Bundle\BlogBundle\Entity\Post $post
+     * @param  \Desarrolla2\Bundle\BlogBundle\Document\Post $post
      * @return array
      */
     public function getForPost(Post $post)

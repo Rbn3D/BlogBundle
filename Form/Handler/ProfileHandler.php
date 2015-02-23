@@ -10,7 +10,7 @@
 
 namespace Desarrolla2\Bundle\BlogBundle\Form\Handler;
 
-use Desarrolla2\Bundle\BlogBundle\Entity\Profile;
+use Desarrolla2\Bundle\BlogBundle\Document\Profile;
 use Desarrolla2\Bundle\BlogBundle\Manager\ProfileManager;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;

@@ -2,7 +2,7 @@
 
 namespace Desarrolla2\Bundle\BlogBundle\Manager;
 
-use Desarrolla2\Bundle\BlogBundle\Entity\Post;
+use Desarrolla2\Bundle\BlogBundle\Document\Post;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

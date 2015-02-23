@@ -1,7 +1,7 @@
 <?php
 namespace Desarrolla2\Bundle\BlogBundle\Search;
 
-use Desarrolla2\Bundle\BlogBundle\Entity\Post;
+use Desarrolla2\Bundle\BlogBundle\Document\Post;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Knp\Component\Pager\Paginator;
 

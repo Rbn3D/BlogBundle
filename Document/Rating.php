@@ -7,59 +7,57 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Desarrolla2\Bundle\BlogBundle\Entity;
+namespace Desarrolla2\Bundle\BlogBundle\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Rating
- * @ORM\Table(name="rating",indexes={@ORM\Index(name="blog_rating_idx", columns={"entity_name", "entity_id"})})
- * @ORM\Entity(repositoryClass="Desarrolla2\Bundle\BlogBundle\Entity\Repository\RatingRepository")
+ *
+ * @ODM\Document(repositoryClass="Desarrolla2\Bundle\BlogBundle\Document\Repository\RatingRepository")
  */
 class Rating
 {
     /**
      * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ODM\Id(strategy="auto")
      */
     protected $id;
 
     /**
      * @var string $entityName
      *
-     * @ORM\Column(name="entity_name", type="string", length=255)
+     * @ODM\String
      */
     protected $entityName;
 
     /**
      * @var integer $entityId
      *
-     * @ORM\Column(name="entity_id", type="integer")s
+     * @ODM\Int
      */
     protected $entityId;
 
     /**
      * @var string $userAgent
      *
-     * @ORM\Column(name="user_agent", type="string", length=255)
+     * @ODM\String
      */
     protected $userAgent;
 
     /**
      * @var string $ip
      *
-     * @ORM\Column(name="ip", type="string", length=255)
+     * @ODM\String
      */
     protected $ip;
 
     /**
      * @var integer $rating
      *
-     * @ORM\Column(name="rating", type="integer")s
+     * @ODM\Int
      */
     protected $rating = 0;
 
@@ -67,7 +65,7 @@ class Rating
      * @var \DateTime $createdAt
      *
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ODM\DateTime
      */
     protected $createdAt;
 
@@ -75,7 +73,7 @@ class Rating
      * @var \DateTime $updatedAt
      *
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ODM\DateTime
      */
     protected $updatedAt;
 

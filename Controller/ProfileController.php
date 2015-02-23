@@ -10,7 +10,7 @@
 
 namespace Desarrolla2\Bundle\BlogBundle\Controller;
 
-use Desarrolla2\Bundle\BlogBundle\Entity\Profile;
+use Desarrolla2\Bundle\BlogBundle\Document\Profile;
 use Desarrolla2\Bundle\BlogBundle\Form\Handler\ProfileHandler;
 use Desarrolla2\Bundle\BlogBundle\Form\Model\ProfileModel;
 use Desarrolla2\Bundle\BlogBundle\Form\Type\ProfileType;

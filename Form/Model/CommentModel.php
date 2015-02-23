@@ -3,7 +3,7 @@
 namespace Desarrolla2\Bundle\BlogBundle\Form\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Desarrolla2\Bundle\BlogBundle\Entity\Comment;
+use Desarrolla2\Bundle\BlogBundle\Document\Comment;
 
 /**
  * CommentModel

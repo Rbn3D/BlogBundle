@@ -1,9 +1,9 @@
 <?php
 
-namespace Desarrolla2\Bundle\BlogBundle\Entity\Repository;
+namespace Desarrolla2\Bundle\BlogBundle\Document\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Desarrolla2\Bundle\BlogBundle\Entity\Tag;
+use Desarrolla2\Bundle\BlogBundle\Document\Tag;
 use Desarrolla2\Bundle\BlogBundle\Model\PostStatus;
 
 /**
@@ -79,7 +79,7 @@ class TagRepository extends EntityRepository
 
     /**
      *
-     * @param  \Desarrolla2\Bundle\BlogBundle\Entity\Tag $t
+     * @param  \Desarrolla2\Bundle\BlogBundle\Document\Tag $t
      * @return \Doctrine\ORM\Query
      */
     public function getQueryForCountItemsForTag(Tag $t)
@@ -99,7 +99,7 @@ class TagRepository extends EntityRepository
 
     /**
      *
-     * @param  \Desarrolla2\Bundle\BlogBundle\Entity\Tag $tag
+     * @param  \Desarrolla2\Bundle\BlogBundle\Document\Tag $tag
      * @return integer
      */
     public function indexTagItemsForTag(Tag $tag)
@@ -138,7 +138,7 @@ class TagRepository extends EntityRepository
     /**
      *
      * @param  string                                    $slug
-     * @return \Desarrolla2\Bundle\BlogBundle\Entity\Tag
+     * @return \Desarrolla2\Bundle\BlogBundle\Document\Tag
      */
     public function getOneBySlug($slug)
     {
@@ -156,7 +156,7 @@ class TagRepository extends EntityRepository
     /**
      *
      * @param  string                                    $tagName
-     * @return \Desarrolla2\Bundle\BlogBundle\Entity\Tag
+     * @return \Desarrolla2\Bundle\BlogBundle\Document\Tag
      */
     public function getOneByName($tagName)
     {
@@ -174,7 +174,7 @@ class TagRepository extends EntityRepository
     /**
      *
      * @param  string                                    $tagName
-     * @return \Desarrolla2\Bundle\BlogBundle\Entity\Tag
+     * @return \Desarrolla2\Bundle\BlogBundle\Document\Tag
      */
     public function getOrCreateByName($tagName)
     {

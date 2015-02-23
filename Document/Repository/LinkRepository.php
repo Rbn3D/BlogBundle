@@ -1,6 +1,6 @@
 <?php
 
-namespace Desarrolla2\Bundle\BlogBundle\Entity\Repository;
+namespace Desarrolla2\Bundle\BlogBundle\Document\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Desarrolla2\Bundle\BlogBundle\Model\LinkStatus;

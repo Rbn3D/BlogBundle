@@ -7,30 +7,28 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Desarrolla2\Bundle\BlogBundle\Entity;
+namespace Desarrolla2\Bundle\BlogBundle\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * Desarrolla2\Bundle\BlogBundle\Entity\Post
+ * Desarrolla2\Bundle\BlogBundle\Document\Post
  *
  * @ORM\Table(name="search_query",indexes={@ORM\Index(name="search_query_idx", columns={"query"})})
- * @ORM\Entity(repositoryClass="Desarrolla2\Bundle\BlogBundle\Entity\Repository\SearchQueryRepository")
+ * @ODM\Document(repositoryClass="Desarrolla2\Bundle\BlogBundle\Document\Repository\SearchQueryRepository")
  */
 class SearchQuery
 {
     /**
      * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ODM\Id(strategy="auto")
      */
     protected $id;
 
     /**
      *
-     * @var Post
+     * @var string
      *
      * @ORM\Column(name="query", type="string")
      */

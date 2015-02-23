@@ -15,11 +15,12 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
-        "knplabs/knp-paginator-bundle": "~2.4.1",
-        "friendsofsymfony/user-bundle": "~2.0@dev",
-        "neutron/sphinxsearch-api": "~2.0.8",
-        "desarrolla2/cache": "*"
+      "php": ">=5.4",
+      "knplabs/knp-paginator-bundle": "~2.4.1",
+      "neutron/sphinxsearch-api": "~2.0.8",
+      "gedmo/doctrine-extensions": "2.3.*",
+      "doctrine/mongodb-odm-bundle": "2.2.*",
+      "desarrolla2/cache": "1.8.*"
     },
     "require-dev": {
         "liip/functional-test-bundle": "~1.0.2"

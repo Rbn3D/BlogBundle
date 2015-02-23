@@ -42,7 +42,7 @@ class SearchHandler
      *
      * @param \Symfony\Component\Form\Form                              $form
      * @param \Symfony\Component\HttpFoundation\Request                 $request
-     * @param \Desarrolla2\Bundle\BlogBundle\Entity\Comment             $comment
+     * @param \Desarrolla2\Bundle\BlogBundle\Document\Comment             $comment
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
     public function __construct(Form $form, Request $request, EntityManager $em, SphinxManager $sm)

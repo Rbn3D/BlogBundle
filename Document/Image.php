@@ -1,27 +1,24 @@
 <?php
 
-namespace Desarrolla2\Bundle\BlogBundle\Entity;
+namespace Desarrolla2\Bundle\BlogBundle\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Desarrolla2\Bundle\BlogBundle\Entity\Image
+ * Desarrolla2\Bundle\BlogBundle\Document\Image
  *
- * @ORM\Table(name="image")
- * @ORM\Entity(repositoryClass="Desarrolla2\Bundle\BlogBundle\Entity\Repository\ImageRepository")
+ * @ODM\Document(repositoryClass="Desarrolla2\Bundle\BlogBundle\Document\Repository\ImageRepository")
  */
 class Image
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ODM\Id(strategy="auto")
      */
     public $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ODM\String()
      */
     public $file;
 
@@ -29,7 +26,7 @@ class Image
      * @var \DateTime $created_at
      *
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ODM\DateTime
      */
     protected $createdAt;
 
@@ -37,7 +34,7 @@ class Image
      * @var \DateTime $updated_at
      *
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ODM\DateTime
      */
     protected $updatedAt;
 

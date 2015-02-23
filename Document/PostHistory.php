@@ -1,15 +1,14 @@
 <?php
 
-namespace Desarrolla2\Bundle\BlogBundle\Entity;
+namespace Desarrolla2\Bundle\BlogBundle\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Desarrolla2\Bundle\BlogBundle\Entity\PostHistory
+ * Desarrolla2\Bundle\BlogBundle\Document\PostHistory
  *
- * @ORM\Table(name="post_history")
- * @ORM\Entity(repositoryClass="Desarrolla2\Bundle\BlogBundle\Entity\Repository\PostHistoryRepository")
+ * @ODM\Document(repositoryClass="Desarrolla2\Bundle\BlogBundle\Document\Repository\PostHistoryRepository")
  */
 class PostHistory
 {
@@ -17,30 +16,28 @@ class PostHistory
     /**
      * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ODM\Id(strategy="auto")
      */
     protected $id;
 
     /**
      * @var string $name
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ODM\String()
      */
     protected $name;
 
     /**
      * @var string $intro
      *
-     * @ORM\Column(name="intro", type="text")
+     * @ODM\String()
      */
     protected $intro;
 
     /**
      * @var string $content
      *
-     * @ORM\Column(name="content", type="text")
+     * @ODM\String()
      */
     protected $content;
 
@@ -48,7 +45,7 @@ class PostHistory
      * @var \DateTime $created_at
      *
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ODM\DateTime
      */
     protected $createdAt;
 
@@ -56,8 +53,7 @@ class PostHistory
      *
      * @var Post
      *
-     * @ORM\ManyToOne(targetEntity="Post")
-     * @ORM\JoinColumn(name="post_id", referencedColumnName="id")
+     * @ODM\ReferenceOne(targetDocument="Post")
      */
     protected $post;
 
@@ -181,10 +177,10 @@ class PostHistory
     /**
      * Set post
      *
-     * @param  \Desarrolla2\Bundle\BlogBundle\Entity\Post $post
+     * @param  \Desarrolla2\Bundle\BlogBundle\Document\Post $post
      * @return PostHistory
      */
-    public function setPost(\Desarrolla2\Bundle\BlogBundle\Entity\Post $post = null)
+    public function setPost(\Desarrolla2\Bundle\BlogBundle\Document\Post $post = null)
     {
         $this->post = $post;
         $this->setName($post->getName());
@@ -197,7 +193,7 @@ class PostHistory
     /**
      * Get post
      *
-     * @return \Desarrolla2\Bundle\BlogBundle\Entity\Post
+     * @return \Desarrolla2\Bundle\BlogBundle\Document\Post
      */
     public function getPost()
     {

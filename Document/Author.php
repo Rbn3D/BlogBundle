@@ -1,31 +1,23 @@
 <?php
 
-namespace Desarrolla2\Bundle\BlogBundle\Entity;
+namespace Desarrolla2\Bundle\BlogBundle\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Desarrolla2\Bundle\BlogBundle\Entity\Tag
+ * Desarrolla2\Bundle\BlogBundle\Document\Author
  *
- * @ORM\Table(name="tag")
- * @ORM\Entity(repositoryClass="Desarrolla2\Bundle\BlogBundle\Entity\Repository\TagRepository")
+ * @ODM\Document(repositoryClass="Desarrolla2\Bundle\BlogBundle\Document\Repository\AuthorRepository")
  */
-class Tag
+class Author extends Person
 {
     /**
      * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ODM\Id(strategy="auto")
      */
     protected $id;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Post", mappedBy="tag")
-     */
-    protected $posts;
 
     /**
      * @var string $name
@@ -33,6 +25,13 @@ class Tag
      * @ORM\Column(name="name", type="string", length=255)
      */
     protected $name;
+
+    /**
+     * @var string $email
+     *
+     * @ORM\Column(name="email", type="string", length=255, unique=true)
+     */
+    protected $email;
 
     /**
      * @var string $slug
@@ -43,11 +42,12 @@ class Tag
     protected $slug;
 
     /**
-     * @var int $items
      *
-     * @ORM\Column(name="items", type="integer")
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetDocument="Post", mappedBy="author")
      */
-    protected $items;
+    protected $posts;
 
     /**
      * @var \DateTime $createdAt
@@ -70,14 +70,9 @@ class Tag
      */
     public function __construct()
     {
-        $this->items = 0;
         $this->posts = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    /**
-     *
-     * @return string
-     */
     public function __toString()
     {
         return $this->getName();
@@ -97,12 +92,13 @@ class Tag
      * Set name
      *
      * @param  string $name
-     *
-     * @return Tag
+     * @return Author
      */
     public function setName($name)
     {
-        $this->name = strtolower($name);
+        $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -119,12 +115,13 @@ class Tag
      * Set created_at
      *
      * @param  \DateTime $createdAt
-     *
-     * @return Tag
+     * @return Author
      */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     /**
@@ -141,12 +138,13 @@ class Tag
      * Set updated_at
      *
      * @param  \DateTime $updatedAt
-     *
-     * @return Tag
+     * @return Author
      */
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     /**
@@ -160,48 +158,26 @@ class Tag
     }
 
     /**
-     * Set slug
-     *
-     * @param  string $slug
-     *
-     * @return Tag
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
      * Add posts
      *
-     * @param  Desarrolla2\Bundle\BlogBundle\Entity\Post $post
-     *
-     * @return Tag
+     * @param  Desarrolla2\Bundle\BlogBundle\Document\Post $posts
+     * @return Author
      */
-    public function addPost(\Desarrolla2\Bundle\BlogBundle\Entity\Post $post)
+    public function addPost(\Desarrolla2\Bundle\BlogBundle\Document\Post $posts)
     {
-        $post->addTag($this);
         $this->posts[] = $posts;
+
+        return $this;
     }
 
     /**
      * Remove posts
      *
-     * @param Desarrolla2\Bundle\BlogBundle\Entity\Post $post
+     * @param Desarrolla2\Bundle\BlogBundle\Document\Post $posts
      */
-    public function removePost(\Desarrolla2\Bundle\BlogBundle\Entity\Post $post)
+    public function removePost(\Desarrolla2\Bundle\BlogBundle\Document\Post $posts)
     {
-        $this->posts->removeElement($post);
+        $this->posts->removeElement($posts);
     }
 
     /**
@@ -215,25 +191,36 @@ class Tag
     }
 
     /**
-     * Set items
+     * Set slug
      *
-     * @param  int $items
-     *
-     * @return Tag
+     * @param  string $slug
+     * @return Author
      */
-    public function setItems($items)
+    public function setSlug($slug)
     {
-        $this->items = (int)$items;
+        $this->slug = $slug;
+
+        return $this;
     }
 
     /**
-     * Get items
+     * Get slug
      *
-     * @return int
+     * @return string
      */
-    public function getItems()
+    public function getSlug()
     {
-        return $this->items;
+        return $this->slug;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function setEmail($email)
+    {
+        $this->email = $email;
     }
 
 }

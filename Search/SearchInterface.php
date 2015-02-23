@@ -12,7 +12,7 @@
 
 namespace Desarrolla2\Bundle\BlogBundle\Search;
 
-use Desarrolla2\Bundle\BlogBundle\Entity\Post;
+use Desarrolla2\Bundle\BlogBundle\Document\Post;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**

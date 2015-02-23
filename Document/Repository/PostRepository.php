@@ -1,10 +1,10 @@
 <?php
 
-namespace Desarrolla2\Bundle\BlogBundle\Entity\Repository;
+namespace Desarrolla2\Bundle\BlogBundle\Document\Repository;
 
 use \Doctrine\ORM\EntityRepository;
-use \Desarrolla2\Bundle\BlogBundle\Entity\Post;
-use \Desarrolla2\Bundle\BlogBundle\Entity\Tag;
+use \Desarrolla2\Bundle\BlogBundle\Document\Post;
+use \Desarrolla2\Bundle\BlogBundle\Document\Tag;
 use Desarrolla2\Bundle\BlogBundle\Model\PostStatus;
 use \DateTime;
 use Doctrine\ORM\Query;
@@ -57,7 +57,7 @@ class PostRepository extends EntityRepository
      *
      * @param string $slug
      *
-     * @return \Desarrolla2\Bundle\BlogBundle\Entity\Post
+     * @return \Desarrolla2\Bundle\BlogBundle\Document\Post
      */
     public function getOneBySlug($slug)
     {
@@ -73,7 +73,7 @@ class PostRepository extends EntityRepository
 
     /**
      *
-     * @param \Desarrolla2\Bundle\BlogBundle\Entity\Tag $tag
+     * @param \Desarrolla2\Bundle\BlogBundle\Document\Tag $tag
      * @param int                                       $limit
      *
      * @return \Doctrine\ORM\Query
@@ -133,7 +133,7 @@ class PostRepository extends EntityRepository
 
     /**
      *
-     * @param \Desarrolla2\Bundle\BlogBundle\Entity\Tag $tag
+     * @param \Desarrolla2\Bundle\BlogBundle\Document\Tag $tag
      *
      * @return \Doctrine\ORM\Query
      */
@@ -175,7 +175,7 @@ class PostRepository extends EntityRepository
 
     /**
      *
-     * @param \Desarrolla2\Bundle\BlogBundle\Entity\Post $post
+     * @param \Desarrolla2\Bundle\BlogBundle\Document\Post $post
      * @param int                                        $limit
      *
      * @return array

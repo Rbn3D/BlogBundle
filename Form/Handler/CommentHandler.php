@@ -13,7 +13,7 @@ namespace Desarrolla2\Bundle\BlogBundle\Form\Handler;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
-use Desarrolla2\Bundle\BlogBundle\Entity\Comment;
+use Desarrolla2\Bundle\BlogBundle\Document\Comment;
 use Doctrine\ORM\EntityManager;
 use Desarrolla2\Bundle\BlogBundle\Manager\SanitizerManager;
 
@@ -44,7 +44,7 @@ class CommentHandler
     protected $sanitizer;
 
     /**
-     * @var \Desarrolla2\Bundle\BlogBundle\Entity\Comment
+     * @var \Desarrolla2\Bundle\BlogBundle\Document\Comment
      */
     protected $entity;
 

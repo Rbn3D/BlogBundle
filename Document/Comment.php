@@ -1,16 +1,15 @@
 <?php
 
-namespace Desarrolla2\Bundle\BlogBundle\Entity;
+namespace Desarrolla2\Bundle\BlogBundle\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Desarrolla2\Bundle\BlogBundle\Model\Gravatar;
 
 /**
- * Desarrolla2\Bundle\BlogBundle\Entity\Comment
+ * Desarrolla2\Bundle\BlogBundle\Document\Comment
  *
- * @ORM\Table(name="comment")
- * @ORM\Entity(repositoryClass="Desarrolla2\Bundle\BlogBundle\Entity\Repository\CommentRepository")
+ * @ODM\Document(repositoryClass="Desarrolla2\Bundle\BlogBundle\Document\Repository\CommentRepository")
  */
 class Comment
 {
@@ -18,44 +17,49 @@ class Comment
     /**
      * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ODM\Id(strategy="auto")
      */
     protected $id;
 
     /**
      * @var string $userName
      *
-     * @ORM\Column(name="user_name", type="string", length=255)
+     * @ODM\String()
      */
     protected $userName;
 
     /**
      * @var string $userEmail
      *
-     * @ORM\Column(name="user_email", type="string", length=255)
+     * @ODM\String()
      */
     protected $userEmail;
 
     /**
      * @var string $userWeb
      *
-     * @ORM\Column(name="user_web", type="string", length=255)
+     * @ODM\String()
      */
     protected $userWeb;
 
     /**
+     * @var boolean $published
+     *
+     * @ODM\Boolean()
+     */
+    protected $published;
+
+    /**
      * @var string $content
      *
-     * @ORM\Column(name="content", type="text")
+     * @ODM\String()
      */
     protected $content;
 
     /**
      * @var string status
      *
-     * @ORM\Column(name="status", type="integer")
+     * @ODM\String()
      */
     protected $status;
 
@@ -63,8 +67,7 @@ class Comment
      *
      * @var Post
      *
-     * @ORM\ManyToOne(targetEntity="Post", inversedBy="comments")
-     * @ORM\JoinColumn(name="post_id", referencedColumnName="id")
+     * @ODM\ReferenceOne(targetDocument="Post", inversedBy="comments")
      */
     protected $post;
 
@@ -72,7 +75,7 @@ class Comment
      * @var \DateTime $createdAt
      *
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ODM\DateTime
      */
     protected $createdAt;
 
@@ -80,7 +83,7 @@ class Comment
      * @var \DateTime $updatedAt
      *
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ODM\DateTime
      */
     protected $updatedAt;
 
@@ -205,10 +208,10 @@ class Comment
     /**
      * Set post
      *
-     * @param  Desarrolla2\Bundle\BlogBundle\Entity\Post $post
+     * @param  Desarrolla2\Bundle\BlogBundle\Document\Post $post
      * @return Comment
      */
-    public function setPost(\Desarrolla2\Bundle\BlogBundle\Entity\Post $post = null)
+    public function setPost(\Desarrolla2\Bundle\BlogBundle\Document\Post $post = null)
     {
         $this->post = $post;
 
@@ -218,7 +221,7 @@ class Comment
     /**
      * Get post
      *
-     * @return Desarrolla2\Bundle\BlogBundle\Entity\Post
+     * @return Desarrolla2\Bundle\BlogBundle\Document\Post
      */
     public function getPost()
     {

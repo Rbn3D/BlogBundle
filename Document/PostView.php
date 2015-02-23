@@ -7,56 +7,51 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Desarrolla2\Bundle\BlogBundle\Entity;
+namespace Desarrolla2\Bundle\BlogBundle\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * PostView
  *
- * @ORM\Table(name="post_view",indexes={@ORM\Index(name="post_click_idx", columns={"post_id", "date"})})
- * @ORM\Entity(repositoryClass="Desarrolla2\Bundle\BlogBundle\Entity\Repository\PostViewRepository")
+ * @ODM\Document(repositoryClass="Desarrolla2\Bundle\BlogBundle\Document\Repository\PostViewRepository")
  */
 class PostView
 {
     /**
      * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ODM\Id(strategy="auto")
      */
     protected $id;
 
     /**
-     *
      * @var Post
      *
-     * @ORM\Column(name="post_id", type="integer")
+     * @ODM\Int()
      */
     protected $postId;
 
     /**
-     *
      * @var Post
      *
-     * @ORM\Column(name="post_slug", type="string")
+     * @ODM\String()
      */
     protected $postSlug;
 
     /**
      *
-     * @var Post
+     * @var int
      *
-     * @ORM\Column(name="count", type="integer")
+     * @ODM\Int()
      */
     protected $count;
 
     /**
      * @var \DateTime $published_at
      *
-     * @ORM\Column(name="date", type="date")
+     * @ODM\DateTime()
      */
     protected $date;
 
@@ -64,7 +59,7 @@ class PostView
      * @var \DateTime $created_at
      *
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ODM\DateTime()
      */
     protected $createdAt;
 
@@ -72,7 +67,7 @@ class PostView
      * @var \DateTime $updated_at
      *
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ODM\DateTime()
      */
     protected $updatedAt;
 
@@ -233,11 +228,11 @@ class PostView
     /**
      * Set post
      *
-     * @param \Desarrolla2\Bundle\BlogBundle\Entity\Post $post
+     * @param \Desarrolla2\Bundle\BlogBundle\Document\Post $post
      *
      * @return FeedItem
      */
-    public function setPost(\Desarrolla2\Bundle\BlogBundle\Entity\Post $post = null)
+    public function setPost(\Desarrolla2\Bundle\BlogBundle\Document\Post $post = null)
     {
         $this->postId = $post->getId();
         $this->postSlug = $post->getSlug();

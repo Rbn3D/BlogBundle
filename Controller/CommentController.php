@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Desarrolla2\Bundle\BlogBundle\Entity\Comment;
+use Desarrolla2\Bundle\BlogBundle\Document\Comment;
 use Desarrolla2\Bundle\BlogBundle\Form\Type\CommentType;
 use Desarrolla2\Bundle\BlogBundle\Form\Model\CommentModel;
 use Desarrolla2\Bundle\BlogBundle\Form\Handler\CommentHandler;

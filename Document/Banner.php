@@ -7,39 +7,36 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Desarrolla2\Bundle\BlogBundle\Entity;
+namespace Desarrolla2\Bundle\BlogBundle\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Banner
  *
- * @ORM\Table(name="banner")
- * @ORM\Entity(repositoryClass="Desarrolla2\Bundle\BlogBundle\Entity\Repository\BannerRepository")
+ * @ODM\Document(repositoryClass="Desarrolla2\Bundle\BlogBundle\Document\Repository\BannerRepository")
  */
 class Banner
 {
     /**
      * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ODM\Id(strategy="auto")
      */
     protected $id;
 
     /**
      * @var string $name
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ODM\String
      */
     protected $name;
 
     /**
      * @var string $content
      *
-     * @ORM\Column(name="content", type="text")
+     * @ODM\String
      */
     protected $content;
 
@@ -47,14 +44,14 @@ class Banner
      *
      * @var Post
      *
-     * @ORM\Column(name="weight", type="integer")
+     * @ODM\Int
      */
     protected $weight;
 
     /**
-     * @var string $isPublished
+     * @var boolean $isPublished
      *
-     * @ORM\Column(name="is_published", type="boolean")
+     * @ODM\Boolean
      */
     protected $isPublished = false;
 
@@ -62,7 +59,7 @@ class Banner
      * @var \DateTime $created_at
      *
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ODM\DateTime
      */
     protected $createdAt;
 
@@ -70,7 +67,7 @@ class Banner
      * @var \DateTime $updated_at
      *
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ODM\DateTime
      */
     protected $updatedAt;
 
