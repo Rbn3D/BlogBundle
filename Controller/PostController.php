@@ -43,7 +43,7 @@ class PostController extends Controller
                 $this->getPage(),
                 $this->container->getParameter('blog.items')
             );
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
             throw $this->createNotFoundException('Page not found');
         }
 

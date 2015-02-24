@@ -30,13 +30,7 @@
     <link rel="alternate" type="application/rss+xml" title="rss feed" href="{{ path('_blog_feed') }}"/>
   {% endblock %}
   {% block stylesheets %}
-    {% stylesheets
-    '@BlogBundle/Resources/public/css/vendor/bootstrap/bootstrap.css'
-    '@BlogBundle/Resources/public/css/vendor/bootstrap/bootstrap-theme.css'
-    '@BlogBundle/Resources/public/css/vendor/fontawesome/fontawesome.css'
-    filter='?uglifycss' filter='cssrewrite' %}
-    <link rel="stylesheet" href="{{ asset_url }}"/>
-    {% endstylesheets %}
+
   {% endblock %}
 </head>
 <body>
@@ -100,11 +94,7 @@
 {% endblock %}
 {% block footer %}{% endblock %}
 {% block javascripts %}
-  {% javascripts
-  '@BlogBundle/Resources/public/js/vendor/jquery/jquery.js'
-  '@BlogBundle/Resources/public/js/vendor/bootstrap/bootstrap.js' %}
-  <script src="{{ asset_url }}"></script>
-  {% endjavascripts %}{% endblock %}
+{% endblock %}
 {% block analytics %}
   {% if ga_tracking is defined and blog_google_tracking is not empty %}
     <script type="text/javascript">
