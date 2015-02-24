@@ -11,15 +11,15 @@
 
     <services>
         <service id="blog.post.manager" class="Desarrolla2\Bundle\BlogBundle\Manager\PostManager">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="doctrine_mongodb.odm.document_manager"/>
             <argument type="service" id="event_dispatcher"/>
         </service>
         <service id="blog.post.profile" class="Desarrolla2\Bundle\BlogBundle\Manager\ProfileManager">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="doctrine_mongodb.odm.document_manager"/>
             <argument type="service" id="event_dispatcher"/>
         </service>
         <service id="blog.rating.manager" class="%blog.rating.manager.class%">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="doctrine_mongodb.odm.document_manager"/>
             <argument type="service" id="event_dispatcher"/>
         </service>
         <service id="blog.sanitizer.manager" class="%blog.sanitizer.manager.class%">
