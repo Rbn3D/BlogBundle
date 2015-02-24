@@ -28,7 +28,6 @@ class BlogExtension extends Extension
 
         $files = [
             'twig',
-            'search',
             'manager',
             'imagine',
         ];
