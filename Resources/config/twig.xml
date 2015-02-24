@@ -6,7 +6,7 @@
     <parameters>
         <parameter key="twig.extension.blog.class">Desarrolla2\Bundle\BlogBundle\Twig\TwigExtension</parameter>
         <parameter key="twig.extension.text.class">Twig_Extensions_Extension_Text</parameter>
-        <parameter key="twig.extension.text.class">Twig_Extensions_Extension_Intl</parameter>
+        <parameter key="twig.extension.intl.class">Twig_Extensions_Extension_Intl</parameter>
     </parameters>
 
     <services>
