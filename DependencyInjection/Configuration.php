@@ -44,24 +44,15 @@ class Configuration implements ConfigurationInterface
         $node = $builder->root('search');
         $node
             ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('provider')->defaultValue('mysql')->end()
-            ->arrayNode('mysql')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('connection')->defaultValue('')->end()
-            ->scalarNode('manager')->defaultValue('')->end()
-            ->end()
-            ->end()
-            ->arrayNode('sphinx')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('host')->defaultValue('localhost')->end()
-            ->scalarNode('port')->defaultValue(9312)->end()
-            ->scalarNode('index')->defaultValue('search_idx')->end()
-            ->scalarNode('items')->defaultValue(12)->end()
-            ->end()
-            ->end()
+                ->children()
+                ->scalarNode('provider')->defaultValue('mysql')->end()
+                    ->arrayNode('mysql')
+                    ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('connection')->defaultValue('')->end()
+                            ->scalarNode('manager')->defaultValue('')->end()
+                        ->end()
+                    ->end()
             ->end();
 
         return $node;
