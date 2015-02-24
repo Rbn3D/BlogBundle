@@ -24,55 +24,51 @@ class TagRepository extends DocumentRepository
     {
         $limit = (int) $limit;
         $query = $this->getQueryForGet($limit)
-            ->setMaxResults($limit);
+            ->limit($limit)
+        ;
 
-        return $query->getResult();
+        return $query->getQuery()->execute();
     }
 
     /**
      *
-     * @return \Doctrine\ODM\Query
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
     public function getQueryForGet()
     {
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT t FROM BlogBundle:Tag t ' .
-            ' WHERE t.items >= 1 ' .
-            ' ORDER BY t.items DESC '
-        );
+        $qb = $em->createQueryBuilder();
 
-        return $query;
+        $qb->field('items')->gte('1');
+        $qb->sort('items', 'DESC');
+
+        return $qb;
     }
 
     /**
      * @param  int                        $limit
-     * @return \Doctrine\ODM\QueryBuilder
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
     public function getQueryBuilderForGet($limit = self::TAGS_PER_PAGE)
     {
-        $limit = (int) $limit;
         $em = $this->getDocumentManager();
-        $qb = $em->createQueryBuilder()
-            ->select('t')
-            ->from('BlogBundle:Tag', 't')
-            ->orderBy('t.items', 'DESC')
-            ->setMaxResults($limit);
+        $qb = $em->createQueryBuilder();
+
+        $qb->sort('items', 'DESC');
+        $qb->limit($limit);
 
         return $qb;
     }
 
     /**
      *
-     * @return \Doctrine\ODM\QueryBuilder
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
     public function getQueryBuilderForFilter()
     {
         $em = $this->getDocumentManager();
-        $qb = $em->createQueryBuilder()
-            ->select('t')
-            ->from('BlogBundle:Tag', 't')
-            ->orderBy('t.items', 'DESC');
+        $qb = $em->createQueryBuilder();
+        $qb->sort('items', 'DESC');
 
         return $qb;
     }
@@ -80,21 +76,16 @@ class TagRepository extends DocumentRepository
     /**
      *
      * @param  \Desarrolla2\Bundle\BlogBundle\Document\Tag $t
-     * @return \Doctrine\ODM\Query
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
-    public function getQueryForCountItemsForTag(Tag $t)
+    public function getCountItemsForTag(Tag $t)
     {
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT COUNT(p) FROM BlogBundle:Post p ' .
-            ' JOIN p.tags t ' .
-            ' WHERE p.status = ' . PostStatus::PUBLISHED .
-            ' AND t = :t ' .
-            ' ORDER BY p.createdAt DESC '
-        )
-            ->setParameter('t', $t);
+        $qb = $em->createQueryBuilder();
 
-        return $query;
+        $qb->field('posts.status')->equals(PostStatus::PUBLISHED);
+
+        return $qb->getQuery()->execute()->conut();
     }
 
     /**
@@ -105,8 +96,8 @@ class TagRepository extends DocumentRepository
     public function indexTagItemsForTag(Tag $tag)
     {
         $em = $this->getDocumentManager();
-        $n = $this->getQueryForCountItemsForTag($tag)
-            ->getSingleScalarResult();
+        $n = $this->getCountItemsForTag($tag);
+
         $tag->setItems($n);
         $em->persist($tag);
         $em->flush();
@@ -128,11 +119,9 @@ class TagRepository extends DocumentRepository
     public function count()
     {
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT COUNT(t) FROM BlogBundle:Tag t '
-        );
+        $qb = $em->createQueryBuilder();
 
-        return $query->getSingleScalarResult();
+        return $qb->getQuery()->execute()->conut();
     }
 
     /**
@@ -142,15 +131,7 @@ class TagRepository extends DocumentRepository
      */
     public function getOneBySlug($slug)
     {
-        $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT t FROM BlogBundle:Tag t ' .
-            ' WHERE t.slug = :slug' .
-            ' ORDER BY t.createdAt DESC '
-        )
-            ->setParameter('slug', $slug);
-
-        return $query->getOneOrNullResult();
+        return $this->findOneBy(['slug' => $slug]);
     }
 
     /**
@@ -160,15 +141,7 @@ class TagRepository extends DocumentRepository
      */
     public function getOneByName($tagName)
     {
-        $em = $this->getDocumentManager();
-        $name = strtolower($tagName);
-        $query = $em->createQuery(
-            ' SELECT t FROM BlogBundle:Tag t ' .
-            ' WHERE t.name = :name'
-        )
-            ->setParameter('name', $name);
-
-        return $query->getOneOrNullResult();
+        return $this->findOneBy(['name' => $tagName]);
     }
 
     /**

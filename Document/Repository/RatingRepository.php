@@ -22,20 +22,24 @@ class RatingRepository extends DocumentRepository
      */
     public function getRatingFor($entityName, $entityId)
     {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('n', 'n', 'integer');
+        $em = $this->getDocumentManager();
+        $qb = $em->createQueryBuilder();
 
-        return (int) $this->getDocumentManager()
-            ->createNativeQuery(
-                ' SELECT SUM(r.rating) as n ' .
-                ' FROM rating AS r' .
-                ' WHERE r.entity_name = :entityName ' .
-                ' AND r.entity_id = :entityId ',
-                $rsm
-            )
-            ->setParameter('entityName', $entityName)
-            ->setParameter('entityId', $entityId)
-            ->getSingleScalarResult();
+        $qb->field('entityName')->equals($entityName);
+        $qb->field('entityId')->equals($entityId);
+
+        $results = $qb->getQuery()->execute();
+
+        /** @var \MongoCollection $results */
+        $filtered = $results->aggregate([
+            '$group' => [
+                '_id' => null,
+                'sum' => ['$sum' => '$rating']
+            ]
+        ])
+        ;
+
+        return $filtered['results'][0]['sum'];
     }
 
     /**
@@ -46,19 +50,12 @@ class RatingRepository extends DocumentRepository
      */
     public function getVotesFor($entityName, $entityId)
     {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('n', 'n', 'integer');
+        $em = $this->getDocumentManager();
+        $qb = $em->createQueryBuilder();
 
-        return (int) $this->getDocumentManager()
-            ->createNativeQuery(
-                ' SELECT COUNT(*) as n ' .
-                ' FROM rating AS r' .
-                ' WHERE r.entity_name = :entityName ' .
-                ' AND r.entity_id = :entityId ',
-                $rsm
-            )
-            ->setParameter('entityName', $entityName)
-            ->setParameter('entityId', $entityId)
-            ->getSingleScalarResult();
+        $qb->field('entityName')->equals($entityName);
+        $qb->field('entityId')->equals($entityId);
+
+        return $qb->getQuery()->execute()->count();
     }
 }
