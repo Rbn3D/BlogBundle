@@ -2,33 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <title>{% block title %}{{ blog_name }}{% endblock %}</title>
-    {% block canonical %}{% endblock %}
-    <meta name="description" content="{% block meta_description %}{{ blog_description }}{% endblock %}">
-    <meta name="robots" content="{% block meta_robots %}index, follow{% endblock %}"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    {% block meta_og %}
-        <meta property="og:title" content="{{ blog_name }}"/>
-        <meta property="og:description" content="{{ blog_description }}"/>
-        <meta property="og:image" content="{{ asset('bundles/app/ico/favicon-154.png') }}"/>
-        <meta property="og:locale" content="{{ locale }}"/>
-        <meta property="og:type" content="website"/>
-    {% endblock %}
-    {% block meta_twiter %}
-        <meta property=":card" content="summary"/>
-        <meta name="twitter:title" content="{{ blog_name }}"/>
-    {% endblock %}
-    {% block meta_other %}{% endblock %}
-    {% block favicon %}
-        <meta name="msapplication-TileColor" content="#FFFFFF"/>
-        <meta name="msapplication-TileImage" content="{{ asset('bundles/app/ico/favicon-144.png') }}"/>
-        <link rel="shortcut icon" href="{{ asset('bundles/app/ico/favicon-16.png') }}"/>
-        <link rel="apple-touch-icon-precomposed" href="{{ asset('bundles/app/ico/favicon-152.png') }}"/>
-        <link rel="icon" sizes="32x32" href="{{ asset('bundles/app/ico/favicon-32.png') }}"/>
-    {% endblock %}
-    {% block rss %}
-        <link rel="alternate" type="application/rss+xml" title="rss feed" href="{{ path('_blog_feed') }}"/>
-    {% endblock %}
+    {#<title>{% block title %}{{ blog_name }}{% endblock %}</title>#}
+    {#{% block canonical %}{% endblock %}#}
+    {#<meta name="description" content="{% block meta_description %}{{ blog_description }}{% endblock %}">#}
+    {#<meta name="robots" content="{% block meta_robots %}index, follow{% endblock %}"/>#}
+    {#<meta name="viewport" content="width=device-width, initial-scale=1.0"/>#}
+    {#{% block meta_og %}#}
+        {#<meta property="og:title" content="{{ blog_name }}"/>#}
+        {#<meta property="og:description" content="{{ blog_description }}"/>#}
+        {#<meta property="og:image" content="{{ asset('bundles/app/ico/favicon-154.png') }}"/>#}
+        {#<meta property="og:locale" content="{{ locale }}"/>#}
+        {#<meta property="og:type" content="website"/>#}
+    {#{% endblock %}#}
+    {#{% block meta_twiter %}#}
+        {#<meta property=":card" content="summary"/>#}
+        {#<meta name="twitter:title" content="{{ blog_name }}"/>#}
+    {#{% endblock %}#}
+    {#{% block meta_other %}{% endblock %}#}
+    {#{% block favicon %}#}
+        {#<meta name="msapplication-TileColor" content="#FFFFFF"/>#}
+        {#<meta name="msapplication-TileImage" content="{{ asset('bundles/app/ico/favicon-144.png') }}"/>#}
+        {#<link rel="shortcut icon" href="{{ asset('bundles/app/ico/favicon-16.png') }}"/>#}
+        {#<link rel="apple-touch-icon-precomposed" href="{{ asset('bundles/app/ico/favicon-152.png') }}"/>#}
+        {#<link rel="icon" sizes="32x32" href="{{ asset('bundles/app/ico/favicon-32.png') }}"/>#}
+    {#{% endblock %}#}
+    {#{% block rss %}#}
+        {#<link rel="alternate" type="application/rss+xml" title="rss feed" href="{{ path('_blog_feed') }}"/>#}
+    {#{% endblock %}#}
     {% block stylesheets %}
 
     {% endblock %}
