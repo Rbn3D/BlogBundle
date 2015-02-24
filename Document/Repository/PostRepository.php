@@ -7,6 +7,7 @@ use \Desarrolla2\Bundle\BlogBundle\Document\Post;
 use \Desarrolla2\Bundle\BlogBundle\Document\Tag;
 use Desarrolla2\Bundle\BlogBundle\Model\PostStatus;
 use \DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 
 /**
@@ -34,7 +35,7 @@ class PostRepository extends DocumentRepository
         $or = [];
 
         foreach ($ids as $id) {
-            $or[] = $qb->field('id')->equals($id);
+            $or[] = $qb->field('$id')->equals($id);
         }
 
         $qb->addOr($or);
@@ -182,20 +183,10 @@ class PostRepository extends DocumentRepository
         $qb = $em->createQueryBuilder();
 
         $qb->field('status')->equals(PostStatus::PUBLISHED);
+        $qb->field('tags.posts.$id')->equals($post->getId());
         $qb->sort('publishedAt', 'DESC');
+        $qb->limit($limit);
 
-        // TODO
-
-            ' SELECT p FROM BlogBundle:Post p ' .
-            ' JOIN p.tags t ' .
-            ' JOIN t.posts p1 ' .
-            ' WHERE p.status = ' . PostStatus::PUBLISHED .
-            ' AND p1 = :post ' .
-            ' AND p != :post ' .
-            ' ORDER BY p.publishedAt DESC ';
-
-            ->setParameter('post', $post)
-            ->setMaxResults($limit);
         $related = $qb->getQuery()->execute();
         if (count($related)) {
             return $related;
@@ -219,16 +210,13 @@ class PostRepository extends DocumentRepository
 
     /**
      *
-     * @return \Doctrine\ODM\QueryBuilder
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
     public function getQueryBuilderForFilter()
     {
         $em = $this->getDocumentManager();
         $qb = $em->createQueryBuilder();
-        $qb
-            ->select('p')
-            ->from('BlogBundle:Post', 'p')
-            ->orderBy('p.createdAt', 'DESC');
+        $qb->sort('createdAt', 'DESC');
 
         return $qb;
     }
@@ -240,11 +228,7 @@ class PostRepository extends DocumentRepository
     public function count()
     {
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT COUNT(p) FROM BlogBundle:Post p '
-        );
-
-        return $query->getSingleScalarResult();
+        return $em->createQueryBuilder()->getQuery()->execute()->count();
     }
 
     /**
@@ -254,12 +238,10 @@ class PostRepository extends DocumentRepository
     public function countPublished()
     {
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT COUNT(p) FROM BlogBundle:Post p ' .
-            ' WHERE p.status = ' . PostStatus::PUBLISHED
-        );
-
-        return $query->getSingleScalarResult();
+        return $em->createQueryBuilder()
+            ->field('status')->equals(PostStatus::PUBLISHED)
+            ->getQuery()->execute()->count()
+            ;
     }
 
     /**
@@ -271,14 +253,12 @@ class PostRepository extends DocumentRepository
     public function getUnPublished($limit = 50)
     {
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT p FROM BlogBundle:Post p ' .
-            ' WHERE p.status != ' . PostStatus::PUBLISHED .
-            ' ORDER BY p.createdAt DESC '
-        )
-            ->setMaxResults($limit);
-
-        return $query->getResult();
+        $qb = $em->createQueryBuilder()
+            ->field('status')->notEqual(PostStatus::PUBLISHED)
+            ->sort('createdAt', 'DESC')
+            ->limit($limit)
+            ->getQuery()->execute()
+        ;
     }
 
     /**
@@ -291,14 +271,11 @@ class PostRepository extends DocumentRepository
     public function countFromDate(DateTime $date)
     {
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT COUNT(p) FROM BlogBundle:Post p ' .
-            ' WHERE p.status = ' . PostStatus::PUBLISHED .
-            ' AND p.createdAt >= :date '
-        )
-            ->setParameter('date', $date);
-
-        return $query->getSingleScalarResult();
+        return $em->createQueryBuilder()
+            ->field('status')->equals(PostStatus::PUBLISHED)
+            ->field('createdAt')->gte($date)
+            ->getQuery()->execute()->count()
+            ;
     }
 
     /**
@@ -309,14 +286,11 @@ class PostRepository extends DocumentRepository
     public function countPublishedWithSource()
     {
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT COUNT(p) FROM BlogBundle:Post p ' .
-            ' WHERE p.status = ' . PostStatus::PUBLISHED .
-            ' AND p.source != :source '
-        )
-            ->setParameter('source', '');
-
-        return $query->getSingleScalarResult();
+        return $em->createQueryBuilder()
+            ->field('status')->equals(PostStatus::PUBLISHED)
+            ->field('source')->notEqual('')
+            ->getQuery()->execute()->count()
+            ;
     }
 
     /**
@@ -328,14 +302,12 @@ class PostRepository extends DocumentRepository
     public function getPublished($limit = 50)
     {
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT p FROM BlogBundle:Post p ' .
-            ' WHERE p.status = ' . PostStatus::PUBLISHED .
-            ' ORDER BY p.createdAt DESC '
-        )
-            ->setMaxResults($limit);
-
-        return $query->getResult();
+        return $em->createQueryBuilder()
+            ->field('status')->equals(PostStatus::PUBLISHED)
+            ->limit($limit)
+            ->sort('createdAt', 'DESC')
+            ->getQuery()->execute()
+            ;
     }
 
     /**
@@ -347,14 +319,12 @@ class PostRepository extends DocumentRepository
     public function getPrePublished($limit = 50)
     {
         $em = $this->getDocumentManager();
-        $query = $em->createQuery(
-            ' SELECT p FROM BlogBundle:Post p ' .
-            ' WHERE p.status = ' . PostStatus::PRE_PUBLISHED .
-            ' ORDER BY p.createdAt DESC '
-        )
-            ->setMaxResults($limit);
-
-        return $query->getResult();
+        return $em->createQueryBuilder()
+            ->field('status')->equals(PostStatus::PRE_PUBLISHED)
+            ->limit($limit)
+            ->sort('createdAt', 'DESC')
+            ->getQuery()->execute()
+            ;
     }
 
     /**
@@ -376,65 +346,26 @@ class PostRepository extends DocumentRepository
      * @param int    $page
      * @param int    $perPage
      *
-     * @return array|\Doctrine\ODM\QueryBuilder
-     */
-    public function getSearchBuilder($query, $page = 1, $perPage = 10)
-    {
-        $tokens = $this->tokenize($query);
-        if (!count($tokens)) {
-            return array();
-        }
-
-        $name = array();
-        $intro = array();
-        $content = array();
-
-        $qb = $this->createQueryBuilder('p');
-        $qb->where('p.status = 1');
-
-        foreach ($tokens as $token) {
-            $tkn = $qb->expr()->literal(sprintf('%%%s%%', $token));
-            $name[] = $qb->expr()->like('p.name', $tkn);
-            $intro[] = $qb->expr()->like('p.intro', $tkn);
-            $content[] = $qb->expr()->like('p.content', $tkn);
-        }
-
-        if (count($name) === 1) {
-            $qb->andWhere(
-                $qb->expr()->orX(
-                    call_user_func_array(array($qb->expr(), 'orX'), $name),
-                    call_user_func_array(array($qb->expr(), 'orX'), $intro),
-                    call_user_func_array(array($qb->expr(), 'orX'), $content)
-                )
-            );
-        } else {
-            $qb->andWhere(
-                $qb->expr()->andX(
-                    call_user_func_array(array($qb->expr(), 'orX'), $name),
-                    call_user_func_array(array($qb->expr(), 'orX'), $intro),
-                    call_user_func_array(array($qb->expr(), 'orX'), $content)
-                )
-            );
-        }
-
-        $start = ($page - 1) * $perPage;
-
-        $qb->setFirstResult($start);
-        $qb->setMaxResults($perPage);
-
-        return $qb;
-    }
-
-    /**
-     * @param string $query
-     * @param int    $page
-     * @param int    $perPage
-     *
      * @return mixed
      */
     public function search($query, $page = 1, $perPage = 10)
     {
-        return $this->getQueryForSearch($query, $page, $perPage)->getQuery()->getResult();
+        $resultSet = new ArrayCollection();
+
+        //-- runCommand
+        $itemResultSet = $this->getDocumentManager()->getDocumentDatabase('Desarrolla2\Bundle\BlogBundle\Document\Post')->command([
+            'text' => 'Post',
+            'search' => $query,
+            'limit' => $perPage,
+            'skip' => $page * $perPage
+        ])
+        ;
+
+        foreach ($itemResultSet['results'] as $itemResult) {
+            $resultSet->add($this->uow->getOrCreateDocument('Desarrolla2\Bundle\BlogBundle\Document\Post', $itemResult['obj']));
+        }
+
+        return $resultSet;
     }
 
     /**
@@ -442,38 +373,27 @@ class PostRepository extends DocumentRepository
      */
     public function getArchiveItems()
     {
-        $query = $this->getDocumentManager()
-            ->createQuery(
-                ' SELECT COUNT(p) as n, ' .
-                ' SUBSTRING(p.publishedAt, 1, 4) as year, ' .
-                ' SUBSTRING(p.publishedAt, 6, 2) as month ' .
-                ' FROM BlogBundle:Post p ' .
-                ' WHERE p.status = ' . PostStatus::PUBLISHED .
-                ' GROUP BY year, month ' .
-                ' ORDER BY year DESC, month DESC '
-            );
-        $results = $query->getResult();
-        $items = array();
-        foreach ($results as $item) {
-            if (!$item['year']) {
-                continue;
-            }
-            if (!$item['month']) {
-                continue;
-            }
-            if (!isset($items[$item['year']])) {
-                $items[$item['year']] = array();
-            }
-            array_push(
-                $items[$item['year']],
-                array(
-                    'n' => $item['n'],
-                    'date' => new \DateTime($item['year'] . '-' . $item['month'] . '-01')
-                )
-            );
-        }
+        $em = $this->getDocumentManager();
+        /** @var \MongoCollection $results */
+        $results = $em->createQueryBuilder()
+            ->field('status')->equals(PostStatus::PUBLISHED)
+            ->sort('createdAt', 'DESC')
+            ->getQuery()->execute()
+        ;
 
-        return $items;
+        $ag = $results->aggregate([
+            ['$group' =>
+                ['_id' =>
+                    [
+                        'month' => ['$month' => '$publishedAt'],
+                        'year' => ['$year' => '$publishedAt']
+                    ]
+                ]
+            ]
+        ])
+        ;
+
+        return $ag['results'];
     }
 
     /**

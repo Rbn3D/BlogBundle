@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Post
  *
  * @ODM\Document(repositoryClass="Desarrolla2\Bundle\BlogBundle\Document\Repository\PostRepository")
+ * @MongoDB\Index(keys={"title"="text"})
  */
 class Post
 {
