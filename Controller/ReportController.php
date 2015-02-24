@@ -35,7 +35,7 @@ class ReportController extends Controller
      */
     public function postedItemsAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine_mongodb.odm.document_manager');
         $day_ago = new DateTime('-1 day');
         $week_ago = new DateTime('-1 week');
         $month_ago = new DateTime('-1 month');
@@ -90,7 +90,7 @@ class ReportController extends Controller
      */
     public function mostRatedAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine_mongodb.odm.document_manager');
         $from = $this->getFrom($request->get('period'));
 
         $items = $em->createQuery(
@@ -135,7 +135,7 @@ class ReportController extends Controller
      */
     public function mostViewedAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine_mongodb.odm.document_manager');
         $from = $this->getFrom($request->get('period'));
 
         $items = $em->createQuery(
@@ -180,7 +180,7 @@ class ReportController extends Controller
      */
     public function mostCommentedAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine_mongodb.odm.document_manager');
         $from = $this->getFrom($request->get('period'));
 
         $items = $em->createQuery(

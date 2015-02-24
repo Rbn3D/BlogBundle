@@ -34,7 +34,7 @@ class PostController extends Controller
     public function indexAction(Request $request)
     {
         $paginator = $this->get('knp_paginator');
-        $query = $this->getDoctrine()->getManager()
+        $query = $this->get('doctrine_mongodb.odm.document_manager')
             ->getRepository('BlogBundle:Post')->getQueryForGet();
 
         try {
@@ -68,7 +68,7 @@ class PostController extends Controller
      */
     public function viewAction(Request $request)
     {
-        $post = $this->getDoctrine()->getManager()
+        $post = $this->get('doctrine_mongodb.odm.document_manager')
             ->getRepository('BlogBundle:Post')
             ->getOneBySlug($request->get('slug', false));
 
@@ -79,7 +79,7 @@ class PostController extends Controller
             return new RedirectResponse($this->generateUrl('_blog_default'), 302);
         }
 
-        $comments = $this->getDoctrine()->getManager()
+        $comments = $this->get('doctrine_mongodb.odm.document_manager')
             ->getRepository('BlogBundle:Comment')->getForPost($post);
 
         $form = $this->createForm(new CommentType(), new CommentModel($this->createCommentForPost($post)));
@@ -103,13 +103,13 @@ class PostController extends Controller
      */
     public function postViewAction(Request $request)
     {
-        $post = $this->getDoctrine()->getManager()
+        $post = $this->get('doctrine_mongodb.odm.document_manager')
             ->getRepository('BlogBundle:Post')->getOneBySlug($request->get('slug', false));
         if (!$post) {
             throw $this->createNotFoundException('The post does not exist');
         }
 
-        $this->getDoctrine()->getManager()
+        $this->get('doctrine_mongodb.odm.document_manager')
             ->getRepository('BlogBundle:PostView')
             ->add($post);
 

@@ -38,7 +38,7 @@ class RedirectController extends Controller
     public function postSourceAction(Request $request)
     {
 
-        $post = $this->getDoctrine()->getManager()
+        $post = $this->get('doctrine_mongodb.odm.document_manager')
             ->getRepository('BlogBundle:Post')->find($request->get('id', false));
 
         if (!$post) {
@@ -54,7 +54,7 @@ class RedirectController extends Controller
             );
         }
 
-        $this->getDoctrine()->getManager()
+        $this->get('doctrine_mongodb.odm.document_manager')
             ->getRepository('BlogBundle:PostClick')
             ->add($post);
 

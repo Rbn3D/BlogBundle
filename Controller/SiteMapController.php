@@ -46,7 +46,7 @@ class SiteMapController extends Controller
         return $this->render(
             'BlogBundle:/SiteMap:archive.xml.twig',
             array(
-                'items' => $this->getDoctrine()->getManager()
+                'items' => $this->get('doctrine_mongodb.odm.document_manager')
                         ->getRepository('BlogBundle:Post')->getArchiveItems(),
             )
         );
@@ -60,7 +60,7 @@ class SiteMapController extends Controller
     {
         $request->setRequestFormat('xml');
         $items = array();
-        $posts = $this->getDoctrine()->getManager()
+        $posts = $this->get('doctrine_mongodb.odm.document_manager')
             ->getRepository('BlogBundle:Post')->get(
                 $this->container->getParameter('blog.sitemap.items')
             );
@@ -101,7 +101,7 @@ class SiteMapController extends Controller
     {
         $request->setRequestFormat('xml');
         $items = array();
-        $tags = $this->getDoctrine()->getManager()
+        $tags = $this->get('doctrine_mongodb.odm.document_manager')
             ->getRepository('BlogBundle:Tag')->get(
                 $this->container->getParameter('blog.sitemap.items')
             );

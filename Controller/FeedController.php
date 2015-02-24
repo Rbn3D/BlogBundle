@@ -33,7 +33,7 @@ class FeedController extends Controller
     public function indexAction(Request $request)
     {
         $request->setRequestFormat('xml');
-        $items = $this->getDoctrine()->getManager()
+        $items = $this->get('doctrine_mongodb.odm.document_manager')
             ->getRepository('BlogBundle:Post')->get(
                 $this->container->getParameter('blog.rss.items')
             );
@@ -57,12 +57,12 @@ class FeedController extends Controller
     public function tagAction(Request $request)
     {
         $request->setRequestFormat('xml');
-        $tag = $this->getDoctrine()->getManager()
+        $tag = $this->get('doctrine_mongodb.odm.document_manager')
             ->getRepository('BlogBundle:Tag')->getOneBySlug($request->get('slug', false));
         if (!$tag) {
             throw $this->createNotFoundException('The tag does not exist');
         }
-        $items = $this->getDoctrine()->getManager()
+        $items = $this->get('doctrine_mongodb.odm.document_manager')
             ->getRepository('BlogBundle:Post')->getByTag(
                 $tag,
                 $this->container->getParameter('blog.rss.items')

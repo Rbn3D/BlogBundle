@@ -36,7 +36,7 @@ class TagController extends Controller
     public function indexAction(Request $request)
     {
         $paginator = $this->get('knp_paginator');
-        $tag = $this->getDoctrine()->getManager()
+        $tag = $this->get('doctrine_mongodb.odm.document_manager')
                         ->getRepository('BlogBundle:Tag')->getOneBySlug($request->get('slug', false));
         if (!$tag) {
             throw $this->createNotFoundException('The tag does not exist');
@@ -46,7 +46,7 @@ class TagController extends Controller
             throw $this->createNotFoundException('The tag have not items');
         }
 
-        $query = $this->getDoctrine()->getManager()
+        $query = $this->get('doctrine_mongodb.odm.document_manager')
                         ->getRepository('BlogBundle:Post')->getQueryForGetByTag($tag);
 
         try {
@@ -78,7 +78,7 @@ class TagController extends Controller
     {
         $paginator = $this->get('knp_paginator');
 
-        $query = $this->getDoctrine()->getManager()
+        $query = $this->get('doctrine_mongodb.odm.document_manager')
                         ->getRepository('BlogBundle:Tag')->getQueryForGet();
 
         $pagination = $paginator->paginate(

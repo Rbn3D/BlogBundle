@@ -48,7 +48,7 @@ class ArchiveController extends Controller
         }
 
         return [
-            'items' => $this->getDoctrine()->getManager()
+            'items' => $this->get('doctrine_mongodb.odm.document_manager')
                 ->getRepository('BlogBundle:Post')->getArchiveItems(),
         ];
     }

@@ -29,7 +29,7 @@ class WidgetController extends Controller
     {
         return [
             'comments' =>
-                $this->getDoctrine()->getManager()
+                $this->get('doctrine_mongodb.odm.document_manager')
                     ->getRepository('BlogBundle:Comment')->getLatest(4)
         ];
     }
@@ -41,7 +41,7 @@ class WidgetController extends Controller
     {
         return [
             'comments' =>
-                $this->getDoctrine()->getManager()
+                $this->get('doctrine_mongodb.odm.document_manager')
                     ->getRepository('BlogBundle:Comment')->getLatestRelated($post, $items)
         ];
     }
@@ -53,7 +53,7 @@ class WidgetController extends Controller
     {
         return [
             'posts' =>
-                $this->getDoctrine()->getManager()
+                $this->get('doctrine_mongodb.odm.document_manager')
                     ->getRepository('BlogBundle:Post')->getLatest(4)
         ];
     }
@@ -67,7 +67,7 @@ class WidgetController extends Controller
 
         return [
             'posts' =>
-                $this->getDoctrine()->getManager()
+                $this->get('doctrine_mongodb.odm.document_manager')
                     ->getRepository('BlogBundle:Post')->getLatestRelated($post, 4)
         ];
     }
@@ -79,7 +79,7 @@ class WidgetController extends Controller
     {
         return [
             'tags' =>
-                $this->getDoctrine()->getManager()
+                $this->get('doctrine_mongodb.odm.document_manager')
                     ->getRepository('BlogBundle:Tag')->get()
         ];
     }
@@ -91,7 +91,7 @@ class WidgetController extends Controller
     {
         return [
             'links' =>
-                $this->getDoctrine()->getManager()
+                $this->get('doctrine_mongodb.odm.document_manager')
                     ->getRepository('BlogBundle:Link')->getActiveOrdered()
         ];
     }
@@ -117,7 +117,7 @@ class WidgetController extends Controller
     public function bannerAction()
     {
         return [
-            'banner' => $this->getDoctrine()->getManager()
+            'banner' => $this->get('doctrine_mongodb.odm.document_manager')
                 ->getRepository('BlogBundle:Banner')->getRandomActive()
         ];
 

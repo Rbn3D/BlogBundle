@@ -28,7 +28,7 @@ class CommentController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine_mongodb.odm.document_manager');
         $post = $em->getRepository('BlogBundle:Post')->find($request->get('post_id', false));
         if (!$post) {
             throw $this->createNotFoundException('Unable to find post.');
