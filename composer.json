@@ -19,8 +19,9 @@
       "knplabs/knp-paginator-bundle": "~2.4.1",
       "neutron/sphinxsearch-api": "~2.0.8",
       "gedmo/doctrine-extensions": "2.3.*",
-      "doctrine/mongodb-odm-bundle": "2.2.*",
-      "desarrolla2/cache": "1.8.*"
+      "doctrine/mongodb-odm-bundle": "3.0.*",
+      "desarrolla2/cache": "1.8.*",
+      "ezyang/htmlpurifier": "4.6.*"
     },
     "require-dev": {
         "liip/functional-test-bundle": "~1.0.2"

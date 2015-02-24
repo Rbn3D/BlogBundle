@@ -9,9 +9,10 @@
  */
 namespace Desarrolla2\Bundle\BlogBundle\Manager;
 
-use Doctrine\ORM\EntityRepository;
+use Desarrolla2\Bundle\BlogBundle\Document\Post;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
  * AbstractManager
@@ -19,7 +20,7 @@ use Doctrine\ORM\EntityManager;
 abstract class AbstractManager
 {
     /**
-     * @var \Doctrine\ORM\EntityManager;
+     * @var \Doctrine\ODM\MongoDB\DocumentManager;
      */
     protected $em;
 
@@ -29,10 +30,10 @@ abstract class AbstractManager
     protected $eventDispatcher;
 
     /**
-     * @param EntityManager            $em
+     * @param DocumentManager $em
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(EntityManager $em, EventDispatcherInterface $eventDispatcher)
+    public function __construct(DocumentManager $em, EventDispatcherInterface $eventDispatcher)
     {
         $this->em = $em;
         $this->eventDispatcher = $eventDispatcher;
@@ -66,7 +67,7 @@ abstract class AbstractManager
     abstract public function create();
 
     /**
-     * @return EntityRepository
+     * @return DocumentRepository
      */
     abstract public function getRepository();
 }

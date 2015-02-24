@@ -14,7 +14,7 @@ namespace Desarrolla2\Bundle\BlogBundle\Form\Handler;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Desarrolla2\Bundle\BlogBundle\Document\Comment;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Desarrolla2\Bundle\BlogBundle\Manager\SanitizerManager;
 
 /**
@@ -33,7 +33,7 @@ class CommentHandler
     protected $request;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Doctrine\ORM\DocumentManager
      */
     protected $em;
 
@@ -51,14 +51,14 @@ class CommentHandler
     /**
      * @param Form             $form
      * @param Request          $request
-     * @param EntityManager    $em
+     * @param DocumentManager $em
      * @param SanitizerManager $sanitizer
      * @param Comment          $comment
      */
     public function __construct(
         Form $form,
         Request $request,
-        EntityManager $em,
+        DocumentManager $em,
         SanitizerManager $sanitizer,
         Comment $comment
     ) {

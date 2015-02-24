@@ -12,7 +12,7 @@ namespace Desarrolla2\Bundle\BlogBundle\Manager;
 
 use Desarrolla2\Bundle\BlogBundle\Document\Profile;
 use Desarrolla2\Bundle\BlogBundle\Document\User;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 
 /**
  * ProfileManager
@@ -47,7 +47,7 @@ class ProfileManager extends AbstractManager
     }
 
     /**
-     * @return EntityRepository
+     * @return DocumentRepository
      */
     public function getRepository()
     {

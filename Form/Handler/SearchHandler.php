@@ -11,10 +11,9 @@
 
 namespace Desarrolla2\Bundle\BlogBundle\Form\Handler;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManager;
-use Desarrolla2\Bundle\BlogBundle\Search\SphinxManager;
 
 class SearchHandler
 {
@@ -29,14 +28,9 @@ class SearchHandler
     protected $request;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Doctrine\ODM\MongoDB\DocumentManager
      */
     protected $em;
-
-    /**
-     * @var \Desarrolla2\Bundle\BlogBundle\Search\SphinxManager
-     */
-    protected $sm;
 
     /**
      *
@@ -45,12 +39,11 @@ class SearchHandler
      * @param \Desarrolla2\Bundle\BlogBundle\Document\Comment             $comment
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
-    public function __construct(Form $form, Request $request, EntityManager $em, SphinxManager $sm)
+    public function __construct(Form $form, Request $request, DocumentManager $em)
     {
         $this->form = $form;
         $this->request = $request;
         $this->em = $em;
-        $this->sm = $sm;
     }
 
     /**

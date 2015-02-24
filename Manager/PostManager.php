@@ -13,9 +13,8 @@
 namespace Desarrolla2\Bundle\BlogBundle\Manager;
 
 use Desarrolla2\Bundle\BlogBundle\Document\Repository\PostRepository;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Desarrolla2\Bundle\BlogBundle\Document\Post;
 use Desarrolla2\Bundle\BlogBundle\Model\PostStatus;
 use \DateTime;
